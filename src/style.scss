@@ -2,6 +2,7 @@
 .mainnav {
   overflow: hidden;
   background-color: $darkgray;
+
   a {
     float: left;
     font-family: Comic Sans MS, Comic Sans, cursive;
@@ -15,40 +16,41 @@
     font-size: $unit * 1.7;
   }
 }
+
 .Modal {
-  background-color: $darkgray;
-  width: 300px;
-  height: 260px;
-  position: relative;
-  z-index: 3;
-  margin: auto;
-  position: relative;
-  top: -750px;
-  border-radius: $unit * 2;
-  z-index: 100;
-  input {
-    width: 240px;
-    height: 30px;
-    margin-top: 50px;
+  margin-top: 100px;
+  margin-left: 510px;
+
+  .inputModal {
+    width: 280px;
+    height: 40px;
+    margin-top: 20px;
     border-top-style: hidden;
+    font-family: Comic Sans MS, Comic Sans, cursive;
     border-right-style: hidden;
     border-left-style: hidden;
     border-bottom-style: hidden;
     background-color: #eee;
+    padding-left: 20px;
+    font-weight: bold;
   }
   button {
-    width: 100px;
-    margin-top: 40px;
-    height: 30px;
-    background-color: white;
-    border-radius: $unit * 3;
+    width: 140px;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+    margin-top: 80px;
+    margin-left: 40px;
+    height: 40px;
+    background-color: $darkgray;
+    color: white;
+
+    font-size: 16px;
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
     border-bottom-style: hidden;
-    font-weight: bolder;
   }
 }
+
 #plussub {
   position: relative;
   top: -280px;
@@ -102,9 +104,9 @@
 }
 #menutable {
   color: $white;
-  margin-left: $unit * 40;
-  width: $unit * 30;
-  margin-top: $unit;
+  margin-left: $unit * 54;
+  width: $unit * 40;
+  margin-top: $unit * 5;
   display: flex;
   flex-wrap: wrap;
 }
@@ -131,13 +133,7 @@
   margin-top: 4px;
   margin-left: 14px;
 }
-.vl {
-  border-left: 2px solid #eee;
-  height: $unit * 70;
-  margin-top: $unit * 2;
-  position: relative;
-  right: $unit * -20;
-}
+
 #plus1 {
   position: relative;
   top: -750px;
@@ -153,6 +149,7 @@
   color: $white;
   position: relative;
   top: -70px;
+  left: 98px;
 }
 .container {
   display: flex;
@@ -164,6 +161,9 @@
     flex-direction: column;
     width: $unit * 30;
     margin: $unit * 10;
+
+    top: -1%;
+    left: 16%;
   }
 }
 .form-group {
@@ -185,35 +185,82 @@
   }
 }
 .topnav {
-  overflow: hidden;
+  //overflow: hidden;
   background-color: $darkgray;
-  height: $unit * 5;
+  height: 100px;
   a {
     float: left;
     color: $white;
     text-align: center;
-    padding: 10px 16px;
+    padding: -20px -6px;
     font-family: Comic Sans MS, Comic Sans, cursive;
     text-decoration: none;
-    font-size: $unit * 2.4;
+    font-size: $unit * 2.2;
+    padding-left: 20px;
   }
 }
+.headerAdd {
+  text-align: center;
+  color: $darkgray;
+  font-family: Comic Sans MS, Comic Sans, cursive;
+  font-size: 26px;
+  font-weight: bolder;
+  position: absolute;
+  top: 11%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.TabSelector {
+  background-color: $darkgray;
+  height: 13px;
+
+  button {
+    background-color: white;
+
+    font-family: Comic Sans MS, Comic Sans, cursive;
+    font-size: 14px;
+    position: relative;
+    top: -9px;
+    right: -10px;
+    float: left;
+    border: 2px solid lightgray;
+    color: $darkgray;
+    font-weight: bold;
+    margin: -1px;
+    height: 22px;
+    border-radius: 6px;
+    width: 100px;
+  }
+  button:focus {
+    background-color: $darkgray;
+    color: white;
+    border-color: white;
+  }
+}
+
 #img {
   width: $unit * 3;
   height: $unit * 3;
   border-radius: $unit * 3;
-  top: -13px;
+  top: 13px;
   position: relative;
-  right: $unit * 5;
+  right: $unit * -65;
 }
 #menu {
   width: $unit * 5;
   height: $unit * 5;
   border-radius: $unit * 3;
-  margin-top: 3px;
+  position: relative;
+  top: -46px;
+  float: right;
 }
 #username {
-  margin-left: $unit * 90;
+  position: relative;
+  top: 6px;
+  float: right;
+  right: 120px;
 }
 .cost {
   text-align: right;
@@ -400,6 +447,21 @@
     display: flex;
     flex-direction: row;
     max-width: 100%;
+  }
+}
+.Modal {
+  width: 260px;
+  height: 170px;
+  top: -1400px;
+  input {
+    width: 190px;
+    position: relative;
+    top: -10px;
+    margin: 20px;
+  }
+  button {
+    position: relative;
+    top: -50px;
   }
 }
 

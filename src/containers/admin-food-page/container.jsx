@@ -2,6 +2,9 @@ import React from "react";
 import FoodItemList from "./partials/FoodItemList";
 import AddFoodItem from "./partials/AddFoodItem";
 import logo from "../../assets/menu.png";
+import TabSelector from "../../TabSelector";
+import ModalHeader from "react-bootstrap/ModalHeader";
+import ModalBody from "react-bootstrap/ModalBody";
 import {
   fetchFoodAPI,
   fetchAPIAddFood,
@@ -10,7 +13,6 @@ import {
 } from "../action";
 import Modal from "../Modal";
 import "../../style.scss";
-
 
 class App extends React.Component {
   constructor() {
@@ -34,12 +36,19 @@ class App extends React.Component {
       newTypeFood: "",
       newSub: [],
       showing: false,
+      activeId: "home",
     };
+    this.handleChangeTab = this.handleChangeTab.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.deleteFoodItem = this.deleteFoodItem.bind(this);
     this.addFoodItem = this.addFoodItem.bind(this);
     this.AddToAPI = this.AddToAPI.bind(this);
   }
+  handleChangeTab(event) {
+    const buttonId = event.target.id;
+    this.setState({ activeId: buttonId });
+  }
+
   componentDidMount() {
     fetchFoodAPI().then((data) => {
       console.log(data);
@@ -142,83 +151,57 @@ class App extends React.Component {
       });
 
       fetchAPIAddFood(this.state.Menu);
+
       console.log(data);
     });
   }
-
-  render() {
+  getTabContent() {
     const { foodItems } = this.state;
-    return (
-      <div className="App">
-        <div className="topnav">
-          <a className="active" href="#home">
-            Welcome
-          </a>
-          <a href="#home" id="mobilea">
-            {" "}
-            , UserName
-            <img alt="menu1" id="menu1" src={logo} />
-          </a>
-
-          <a id="username" href="#news">
-            Username{" "}
-          </a>
-          <img
-            alt="user"
-            id="img"
-            src="https://t3.ftcdn.net/jpg/01/44/52/94/240_F_144529471_9LhgvhXAYfy50nDjir1aadtMuiMiYUDX.jpg"
-          />
-
-          <img
-            alt="menu"
-            id="menu"
-            src="https://icon-library.com/images/white-menu-icon/white-menu-icon-12.jpg"
-          />
-        </div>
-        <div className="container">
-          <div className="row App-main">
-            {
-              <AddFoodItem
-                food={this.state.food}
-                cost={this.state.cost}
-                description={this.state.description}
-                url={this.state.url}
-                SubType={this.state.SubType}
-                All={this.state.All}
-                foodType={this.state.foodType}
-                foodSubType={this.state.foodSubType}
-                handleInputChange={this.handleInputChange}
-                addFoodItem={this.addFoodItem}
-                newTypeFood={this.state.newTypeFood}
-                AddToAPI={this.AddToAPI}
-                AddNewType={this.AddNewType}
-              />
-            }
+    switch (this.state.activeId) {
+      case "addFood":
+        return (
+          <div>
+            <h class="headerAdd">Adding Food</h>
+            <AddFoodItem
+              food={this.state.food}
+              cost={this.state.cost}
+              description={this.state.description}
+              url={this.state.url}
+              SubType={this.state.SubType}
+              All={this.state.All}
+              foodType={this.state.foodType}
+              foodSubType={this.state.foodSubType}
+              handleInputChange={this.handleInputChange}
+              addFoodItem={this.addFoodItem}
+              newTypeFood={this.state.newTypeFood}
+              AddToAPI={this.AddToAPI}
+              AddNewType={this.AddNewType}
+            />
           </div>
-
-          <div className="vl"></div>
-          <div id="divapp" className="col-4">
+        );
+      case "allFood":
+        return (
+          <div>
+            <h class="headerAdd">Food Item List</h>
             <FoodItemList
               id="list"
               foodItems={foodItems}
               deleteFoodItem={this.deleteFoodItem}
+              Menu={this.state.Menu}
             />
           </div>
-        </div>
-        <div id="block">
+        );
+      case "addType":
+        return (
           <div>
-            <button
-              id="plus1"
-              className="plus"
-              onClick={() => this.setState({ showing: !this.state.showing })}
-            >
-              +
-            </button>
-            {this.state.showing ? (
-              <div className="Modal">
-                <Modal>
+            <h class="headerAdd"> ADD New Type Food</h>
+            <div className="Modal">
+              <Modal className="Modal1">
+                <ModalHeader>Modal Header</ModalHeader>
+                <ModalBody>
                   <div>
                     <input
+                      className="inputModal"
                       required
                       placeholder="New Type Food"
                       type="text"
@@ -228,8 +211,10 @@ class App extends React.Component {
                       onChange={this.handleInputChange}
                     />
                     <input
+                      className="inputModal"
                       placeholder="New Sub Type Food"
                       type="text"
+                      ref="newtext"
                       name="newSub"
                       id="newSub"
                       value={this.state.newSub}
@@ -244,13 +229,50 @@ class App extends React.Component {
                       onClick={() => this.save()}
                       type="button"
                     >
-                      Save
+                      ADD Food Type
                     </button>
                   </div>
-                </Modal>
-              </div>
-            ) : null}
-            <div id="blocksub"></div>
+                </ModalBody>
+              </Modal>
+            </div>
+          </div>
+        );
+      default:
+        return;
+    }
+  }
+  render() {
+    return (
+      <div className="App">
+        <div className="topnav">
+          <a href="#home" id="mobilea">
+            {" "}
+            , UserName
+            <img alt="menu1" id="menu1" src={logo} />
+          </a>
+
+          <a id="username" href="#news">
+            Username{" "}
+          </a>
+          <img
+            alt="user"
+            id="img"
+            src="https://t3.ftcdn.net/jpg/01/44/52/94/240_F_144529471_9LhgvhXAYfy50nDjir1aadtMuiMiYUDX.jpg"
+          />
+          <div className="App">
+            <div className="App">
+              <TabSelector
+                handleChangeTab={this.handleChangeTab}
+                activeId={this.state.activeId}
+              />
+              <div className="App-content">{this.getTabContent()}</div>
+            </div>
+
+            <img
+              alt="menu"
+              id="menu"
+              src="https://icon-library.com/images/white-menu-icon/white-menu-icon-12.jpg"
+            />
           </div>
         </div>
       </div>

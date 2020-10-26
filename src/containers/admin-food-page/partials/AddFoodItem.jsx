@@ -1,8 +1,8 @@
 /* eslint-disable array-callback-return */
 import React from "react";
 
-const AddFoodItem = (props) => {
-  let bb = props.All.map((type) => {
+let AddFoodItem = (props) => {
+  let foodType = props.All.map((type) => {
     return (
       <option key={type.categoryType} value={type.categoryType}>
         {type.categoryType}
@@ -11,7 +11,7 @@ const AddFoodItem = (props) => {
   });
   let type = props.foodType;
   var i = -1;
-  let a = props.All.map((item) => {
+  let foodSubType = props.All.map((item) => {
     i++;
     if (type === item.categoryType) {
       return props.All[i].categorySubType.map((sub) => {
@@ -40,7 +40,7 @@ const AddFoodItem = (props) => {
             list="exampleList"
           />
 
-          <datalist id="exampleList">{bb}</datalist>
+          <datalist id="exampleList">{foodType}</datalist>
         </div>
 
         <div className="form-group">
@@ -102,7 +102,7 @@ const AddFoodItem = (props) => {
             onChange={props.handleInputChange}
             required
           >
-            {a}
+            {foodSubType}
           </select>
         </div>
 
