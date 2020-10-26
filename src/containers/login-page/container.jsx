@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { fetchLoginAPI, validLoginData } from "../action";
 import { composeWithDevTools } from "redux-devtools-extension";
+import toggle from "../../assets/toggle.png";
+
+
+
 
 export default class LoginPage extends Component {
   constructor(props) {
@@ -37,44 +41,61 @@ export default class LoginPage extends Component {
 
   render() {
     return (
-      <form
-        className="logcontainer"
-        onSubmit={(event) =>
-          this.handleLoginClick(event, this.state.email, this.state.password)
-        }
-      >
-        <p>The Login Page</p>
-        <div>
-          <Field
-            className="inputs"
-            name="email"
-            placeholder="Email"
-            id="email"
-            type="text"
-            component="input"
-            value={this.state.email}
-            onChange={this.handleEmailChange}
+      <div>
+        <p className="loginTitle">Welcome to Login Page</p>
+        <p className="areAdmin">Are You an admin ?<img id="toggle" src={toggle} alt="img"/></p>
+        
+       
+        <form
+          className="logcontainer"
+          onSubmit={(event) =>
+            this.handleLoginClick(event, this.state.email, this.state.password)
+          }
+        >
+          
+          <div id="darkDiv">
+            <div id="divImage">
+              {" "}
+              <img
+                alt="user"
+                id="logUser"
+                src="https://www.valtiberina1scout.it/wp-content/uploads/2018/11/user.png"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Field
+              className="inputs"
+              name="email"
+              placeholder="Email"
+              id="email"
+              type="text"
+              component="input"
+              value={this.state.email}
+              onChange={this.handleEmailChange}
+            />
+          </div>
+          <div>
+            <Field
+              className="inputs"
+              type="password"
+              name="password"
+              component="input"
+              id="password"
+              placeholder="password"
+              value={this.state.password}
+              onChange={this.handlePasswordChange}
+            />
+          </div>
+          <input
+            type="submit"
+            id="login"
+            value=" Login"
+            disabled={!validLoginData(this.state.email, this.state.password)}
           />
-        </div>
-        <div>
-          <Field
-            className="inputs"
-            type="password"
-            name="password"
-            component="input"
-            id="password"
-            placeholder="password"
-            value={this.state.password}
-            onChange={this.handlePasswordChange}
-          />
-        </div>
-        <input
-          type="submit"
-          id="login"
-          value=" Login"
-          disabled={!validLoginData(this.state.email, this.state.password)}
-        />
-      </form>
+        </form>
+      </div>
     );
   }
 }

@@ -95,7 +95,6 @@ let AddFoodItem = (props) => {
         <div className="form-group">
           <select
             id="foodSubType"
-            placeholder="select your beverage"
             className="form-control"
             name="foodSubType"
             value={props.foodSubType}
