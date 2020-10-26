@@ -1,3 +1,5 @@
+import { GET_PRODUCTS } from "../shared/store/actions/productsAction";
+
 const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const validLoginData = (email, password) => {
@@ -52,6 +54,25 @@ export const fetchFoodAPI = () => {
       "cache-control": "no-cache",
     },
   }).then((responce_type) => responce_type.json());
+};
+
+export const getAllFoodAPI = () => (dispatch) => {
+  return fetch("https://traineer-064a.restdb.io/rest/foods", {
+    async: true,
+    crossDomain: true,
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      "x-apikey": "5f81fab25799e648a5a8eec6",
+      "cache-control": "no-cache",
+    },
+  }).then((responce_type) => responce_type.json())
+  .then((data) => {
+    dispatch({
+      type: GET_PRODUCTS,
+      payload: data,
+  })
+  })
 };
 
 export const fetchAPIAddFood = (Menu) => {

@@ -1,121 +1,151 @@
 /* eslint-disable array-callback-return */
-import React from "react";
-
-let AddFoodItem = (props) => {
-  let foodType = props.All.map((type) => {
-    return (
-      <option key={type.categoryType} value={type.categoryType}>
-        {type.categoryType}
-      </option>
-    );
-  });
-  let type = props.foodType;
-  var i = -1;
-  let foodSubType = props.All.map((item) => {
-    i++;
-    if (type === item.categoryType) {
-      return props.All[i].categorySubType.map((sub) => {
-        return (
-          <option key={sub} value={sub}>
-            {sub}
-          </option>
-        );
-      });
+import React from "react"
+import { Field, reduxForm } from "redux-form"
+import { fetchAPIAddFood } from "../../action"
+class AddFoodItem extends React.Component {
+  constructor() {
+    super()
+    this.state ={
+      foodSubType: []
     }
-  });
+    this.handleSelectTypeChange = this.handleSelectTypeChange.bind(this)
+    this.submitAddForm = this.submitAddForm.bind(this)
+  }
 
-  return (
-    <div className="container">
-      <form onSubmit={props.addFoodItem}>
-        <div className="form-group">
-          <input
-            id="foodType"
-            placeholder="Food Type"
-            type="text"
-            className="form-control"
-            name="foodType"
-            value={props.foodType}
-            onChange={props.handleInputChange}
-            required
-            list="exampleList"
-          />
+  componentDidMount() {
+    const {data} = this.props
+    if (data && data.length) {
+      this.handleSelectTypeChange(data[0].categoryType)
+    }
+  }
 
-          <datalist id="exampleList">{foodType}</datalist>
-        </div>
+  handleSelectTypeChange(value) {
+    const {data} = this.props
+    const subType = data.find(item => item.categoryType === value)
+    if (subType) {
+      this.setState({
+        foodSubType: subType.categorySubType
+      })
+    }
+  }
 
-        <div className="form-group">
-          <input
-            id="food"
-            placeholder="Enter Food Name"
-            type="text"
-            className="form-control"
-            name="food"
-            value={props.food}
-            onChange={props.handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            min="1"
-            placeholder="Enter Food price"
-            type="number"
-            className="form-control"
-            name="cost"
-            value={props.cost}
-            onChange={props.handleInputChange}
-            required
-          />
-        </div>
+  submitAddForm(values) {
+    debugger
+    fetchAPIAddFood({
+      imageUrl: values.url,
+      desc: values.description,
+      name: values.food,
+      price: values.cost,
+      type: values.foodType,
+      subType: values.foodSubType,
+    }).then(() => {
+      alert("The menu Food is Added to DataBase ");
+    })
+  }
 
-        <div className="form-group">
-          <input
-            id="description"
-            placeholder="Enter Food Description"
-            type="text"
-            className="form-control"
-            name="description"
-            value={props.description}
-            onChange={props.handleInputChange}
-            required
-          />
-        </div>
+  render() {
+    const { data, handleSubmit } = this.props
 
-        <div className="form-group">
-          <input
-            placeholder="Enter Food URL"
-            type="text"
-            className="form-control"
-            name="url"
-            value={props.url}
-            onChange={props.handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <select
-            id="foodSubType"
-            className="form-control"
-            name="foodSubType"
-            value={props.foodSubType}
-            onChange={props.handleInputChange}
-            required
+    return (
+      <div className="container">
+        <form onSubmit={handleSubmit(this.submitAddForm)}>
+          <div className="form-group">
+            <Field
+              id="foodType"
+              className="form-control"
+              name="foodType"
+              component="select"
+              onChange={(e) => this.handleSelectTypeChange(e.target.value)}
+              required
+            >
+              {data && data.map((type) => {
+                  return (
+                    <option key={type.categoryType} value={type.categoryType}>
+                      {type.categoryType}
+                    </option>
+                  )
+                })}
+            </Field>
+          </div>
+          <div className="form-group">
+            <Field
+              id="food"
+              placeholder="Enter Food Name"
+              type="text"
+              component="input"
+              className="form-control"
+              name="food"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <Field
+              min="1"
+              placeholder="Enter Food price"
+              type="number"
+              component="input"
+              className="form-control"
+              name="cost"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <Field
+              id="description"
+              placeholder="Enter Food Description"
+              type="text"
+              component="input"
+              className="form-control"
+              name="description"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <Field
+              placeholder="Enter Food URL"
+              type="text"
+              component="input"
+              className="form-control"
+              name="url"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <Field
+              id="foodSubType"
+              className="form-control"
+              name="foodSubType"
+              component="select"
+              required
+            >
+              {this.state && this.state.foodSubType &&
+                this.state.foodSubType.map((subType) => {
+                  return (
+                    <option key={subType} value={subType}>
+                      {subType}
+                    </option>
+                  )
+                })}
+            </Field>
+          </div>
+
+          <button
+            id="add"
+            type="submit"
+            className="btn btn-success mt-2"
           >
-            {foodSubType}
-          </select>
-        </div>
+            Add To Menu
+          </button>
+        </form>
+      </div>
+    )
+  }
+}
 
-        <button
-          onClick={() => props.AddToAPI()}
-          id="add"
-          className="btn btn-success mt-2"
-        >
-          {" "}
-          Add To Menu{" "}
-        </button>
-      </form>
-    </div>
-  );
-};
+const AddFoodItemForm = reduxForm({
+  form: "add-food",
+})(AddFoodItem)
 
-export default AddFoodItem;
+export default AddFoodItemForm

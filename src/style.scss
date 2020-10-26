@@ -232,6 +232,7 @@
   }
 }
 .headerAdd {
+  width: 100%;
   text-align: center;
   color: $darkgray;
   font-family: Comic Sans MS, Comic Sans, cursive;
@@ -354,7 +355,7 @@
 
   top: 32px;
 }
-#foodSubType {
+#foodSubType, #foodType {
   width: $unit * 42;
   height: 50px;
   border-top-style: hidden;

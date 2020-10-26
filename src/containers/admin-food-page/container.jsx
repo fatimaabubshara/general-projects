@@ -1,125 +1,69 @@
-import React from "react";
-import FoodItemList from "./partials/FoodItemList";
-import AddFoodItem from "./partials/AddFoodItem";
-import logo from "../../assets/menu.png";
-import TabSelector from "../../TabSelector";
-import ModalHeader from "react-bootstrap/ModalHeader";
-import ModalBody from "react-bootstrap/ModalBody";
+import React from "react"
+import FoodItemList from "./partials/FoodItemList"
+import AddFoodItem from "./partials/AddFoodItem"
+import logo from "../../assets/menu.png"
+import TabSelector from "../../TabSelector"
+import ModalHeader from "react-bootstrap/ModalHeader"
+import ModalBody from "react-bootstrap/ModalBody"
 import {
   fetchFoodAPI,
-  fetchAPIAddFood,
   fetchAPIAddnewFood,
   valid,
-} from "../action";
-import Modal from "../Modal";
-import "../../style.scss";
+} from "../action"
+import Modal from "../Modal"
+import "../../style.scss"
 
 class App extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      id: null,
-      userId: 1,
-      food: "",
-      foodType: "",
-      foodSubType: "",
-      url: "",
-      cost: "",
-      description: "",
-      status: false,
-      foodItem: {},
-      foodItems: [],
-      editing: false,
-      All: [],
-      Menu: [],
+      categorysData: [],
       New: [],
       newTypeFood: "",
       newSub: [],
-      showing: false,
       activeId: "home",
-    };
-    this.handleChangeTab = this.handleChangeTab.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.deleteFoodItem = this.deleteFoodItem.bind(this);
-    this.addFoodItem = this.addFoodItem.bind(this);
-    this.AddToAPI = this.AddToAPI.bind(this);
+    }
+    this.handleChangeTab = this.handleChangeTab.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
   }
+
   handleChangeTab(event) {
-    const buttonId = event.target.id;
-    this.setState({ activeId: buttonId });
+    const buttonId = event.target.id
+    this.setState({ activeId: buttonId })
   }
 
   componentDidMount() {
     fetchFoodAPI().then((data) => {
-      console.log(data);
-      this.setState({ All: data });
-      this.setState({ foodType: data[0].categoryType });
-    });
-    fetchFoodAPI().then((success) => {
-      if (success) {
-        alert("Right !");
-      } else {
-        alert("Wrong !");
-      }
-    });
+      console.log(data)
+      this.setState({ categorysData: data })
+    })
   }
 
   handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.value
+    const name = target.name
     this.setState({
       [name]: value,
-    });
-  }
-  addFoodItem(event) {
-    event.preventDefault();
-    if (!this.state.food) return;
-    const foodItem = {
-      id: this.state.foodItems.length + 1,
-      food: this.state.food,
-      cost: this.state.cost,
-      description: this.state.description,
-      foodType: this.state.foodType,
-      newTypeFood: this.state.newTypeFood,
-      foodSubType: this.state.foodSubType,
-      url: this.state.url,
-      userId: this.state.userId,
-      statu: this.state.status,
-      showing: this.state.showing,
-    };
-    this.setState({
-      food: "",
-      cost: "",
-      description: "",
-      foodSubType: "",
-      newTypeFood: "",
-      newSub: "",
-      foodType: "",
-      url: "",
-      foodItem: foodItem,
-      showing: "",
-      showingsub: "",
-      foodItems: [...this.state.foodItems, foodItem],
-    });
+    })
   }
   save() {
     fetchAPIAddnewFood().then((success) => {
       if (success) {
-        alert("The menu Food is Added to DataBase ");
+        alert("The menu Food is Added to DataBase ")
       } else {
-        alert("The menu Food is Not Added to DataBase !!! , Try again");
+        alert("The menu Food is Not Added to DataBase !!! , Try again")
       }
-    });
+    })
     fetchAPIAddnewFood().then((data) => {
-      var item = [];
-      item.push(this.state.newSub);
-      this.setState({ newSub: item });
+      var item = []
+      item.push(this.state.newSub)
+      this.setState({ newSub: item })
 
       this.state.New.push({
         categoryType: this.state.newTypeFood,
         categorySubType: this.state.newSub,
-      });
+      })
 
       fetchAPIAddnewFood(this.state.New);
       console.log(data);
@@ -135,68 +79,36 @@ class App extends React.Component {
       window.location.reload();
     }
   }
-  AddToAPI() {
-    fetchAPIAddFood().then((success) => {
-      if (success) {
-        alert("The menu Food is Added to DataBase ");
-      } else {
-        alert("The menu Food is Not Added to DataBase !!! , Try again");
-      }
-    });
-    fetchAPIAddFood().then((data) => {
-      this.state.Menu.push({
-        imageUrl: this.state.foodItem.url,
-        name: this.state.foodItem.food,
-        price: this.state.foodItem.cost,
-        type: this.state.foodItem.foodType,
-        subType: this.state.foodItem.foodSubType,
-      });
 
-      fetchAPIAddFood(this.state.Menu);
-
-      console.log(data);
-    });
-  }
   getTabContent() {
-    const { foodItems } = this.state;
     switch (this.state.activeId) {
       case "addFood":
         return (
           <div>
-            <h class="headerAdd">Adding Food</h>
-            <AddFoodItem
-              food={this.state.food}
-              cost={this.state.cost}
-              description={this.state.description}
-              url={this.state.url}
-              SubType={this.state.SubType}
-              All={this.state.All}
-              foodType={this.state.foodType}
-              foodSubType={this.state.foodSubType}
-              handleInputChange={this.handleInputChange}
-              addFoodItem={this.addFoodItem}
-              newTypeFood={this.state.newTypeFood}
-              AddToAPI={this.AddToAPI}
-              AddNewType={this.AddNewType}
-            />
+            <div>
+              <h1 className="headerAdd">Adding Food</h1>
+            </div>
+            {this.state.categorysData && this.state.categorysData.length ?
+                <AddFoodItem
+                  data={this.state.categorysData}
+                  initialValues={{foodType: this.state.categorysData && this.state.categorysData[0].categoryType}}
+              />
+              :
+              <div>Loading Data ...</div>
+            }
           </div>
-        );
+        )
       case "allFood":
         return (
           <div>
-            <h class="headerAdd">Food Item List</h>
-            <FoodItemList
-              id="list"
-              foodItems={foodItems}
-              deleteFoodItem={this.deleteFoodItem}
-              Menu={this.state.Menu}
-            />
+            <h1 className="headerAdd">Food Item List</h1>
+            <FoodItemList />
           </div>
-        );
+        )
       case "addType":
         return (
           <div>
-            <h class="headerAdd"> ADD New Type Food</h>
+            <h1 className="headerAdd"> ADD New Type Food</h1>
             <div className="Modal">
               <Modal className="Modal1">
                 <ModalHeader className="ModalHeader">Modal Header</ModalHeader>
@@ -238,9 +150,9 @@ class App extends React.Component {
               </Modal>
             </div>
           </div>
-        );
+        )
       default:
-        return;
+        return
     }
   }
   render() {
@@ -264,8 +176,8 @@ class App extends React.Component {
           <div className="App">
             <div className="App">
               <TabSelector
-                handleChangeTab={this.handleChangeTab}
                 activeId={this.state.activeId}
+                handleChangeTab={this.handleChangeTab}
               />
               <div className="App-content">{this.getTabContent()}</div>
             </div>
@@ -278,8 +190,8 @@ class App extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

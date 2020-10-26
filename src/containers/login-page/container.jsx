@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { fetchLoginAPI, validLoginData } from "../action";
-import { composeWithDevTools } from "redux-devtools-extension";
 import toggle from "../../assets/toggle.png";
 
 

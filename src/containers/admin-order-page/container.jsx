@@ -3,7 +3,7 @@ class OrderPage extends Component {
   render() {
     return (
       <div>
-        <h>This is the orders page</h>
+        <h1>This is the orders page</h1>
       </div>
     );
   }
