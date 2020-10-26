@@ -7,7 +7,7 @@ function TabSelector(props) {
         onClick={props.handleChangeTab}
         className={props.activeId === "addFood" ? "active" : ""}
       >
-       Add Food
+        Add Food
       </button>
       <button
         id="allFood"

@@ -125,7 +125,9 @@ class App extends React.Component {
       console.log(data);
     });
   }
-
+  logout() {
+    window.location.href = "login-page/container.jsx";
+  }
   deleteFoodItem(id) {
     const foodItems = this.state.foodItems.filter((item) => item.id !== id);
     this.setState({ foodItems: foodItems });
@@ -197,7 +199,7 @@ class App extends React.Component {
             <h class="headerAdd"> ADD New Type Food</h>
             <div className="Modal">
               <Modal className="Modal1">
-                <ModalHeader>Modal Header</ModalHeader>
+                <ModalHeader className="ModalHeader">Modal Header</ModalHeader>
                 <ModalBody>
                   <div>
                     <input
@@ -246,19 +248,19 @@ class App extends React.Component {
       <div className="App">
         <div className="topnav">
           <a href="#home" id="mobilea">
-            {" "}
-            , UserName
             <img alt="menu1" id="menu1" src={logo} />
           </a>
 
           <a id="username" href="#news">
             Username{" "}
           </a>
-          <img
-            alt="user"
-            id="img"
-            src="https://t3.ftcdn.net/jpg/01/44/52/94/240_F_144529471_9LhgvhXAYfy50nDjir1aadtMuiMiYUDX.jpg"
-          />
+          <button onClick={this.logout} id="imgButton">
+            <img
+              alt="user"
+              id="img"
+              src="https://www.kindpng.com/picc/m/19-194798_transparent-logout-png-sign-out-icon-transparent-png.png"
+            />
+          </button>
           <div className="App">
             <div className="App">
               <TabSelector
